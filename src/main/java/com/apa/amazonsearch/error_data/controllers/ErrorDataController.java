@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ErrorDataController {
-    private final ErrorDataService errorDataService;
+    private final ErrorDataService errorDataService = null;
 
     @GetMapping("/v1/errors")
     @CrossOrigin

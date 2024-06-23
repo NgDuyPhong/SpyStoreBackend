@@ -24,6 +24,9 @@ public class User {
     String password;
 
     public boolean isAdmin() {
+    	if (this.username == null) {
+    		return false;
+    	}
         return this.username.equalsIgnoreCase("admin");
     }
 }

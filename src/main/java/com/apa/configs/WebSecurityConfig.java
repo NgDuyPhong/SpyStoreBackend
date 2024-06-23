@@ -21,47 +21,53 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    private final JwtRequestFilter jwtRequestFilter;
+	private final JwtRequestFilter jwtRequestFilter;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        // We don't need CSRF for this example
-        httpSecurity.cors().and().csrf().disable()
-            // dont authenticate this particular request
-            .authorizeRequests()
-            .antMatchers("/users/authenticate", "/extensions/products/users/*")
-            .permitAll()
-            .antMatchers(HttpMethod.POST, "/extensions/products/users/*")
-            .permitAll()
-            .antMatchers(HttpMethod.DELETE, "/extensions/*")
-            .permitAll()
-            .anyRequest() // all other requests need to be authenticated
-            .authenticated()
-            .and()
-            .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		// We don't need CSRF for this example
+//        httpSecurity.cors().and().csrf().disable()
+//            // dont authenticate this particular request
+//            .authorizeRequests()
+//            .antMatchers("/users/authenticate", "/extensions/products/users/*")
+//            .permitAll()
+//            .antMatchers(HttpMethod.POST, "/extensions/products/users/*")
+//            .permitAll()
+//            .antMatchers(HttpMethod.DELETE, "/extensions/*")
+//            .permitAll()
+//            .anyRequest() // all other requests need to be authenticated
+//            .authenticated()
+//            .and()
+//            .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//
+//        // Add a filter to validate the tokens with every request
+//        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		httpSecurity.cors().and().csrf().disable()
+				// Permit all requests
+				.authorizeRequests().anyRequest().permitAll() // Allow all requests without authentication
+				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // Add a filter to validate the tokens with every request
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+		// Add a filter to validate the tokens with every request
+		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-            .ignoring()
-            .antMatchers("/h2-console/**");
-    }
+	}
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/h2-console/**");
+	}
 }

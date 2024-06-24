@@ -1,0 +1,5 @@
+[[1;31mERROR[m] Error executing Maven.
+[[1;31mERROR[m] java.lang.IllegalStateException: Unable to load cache item
+[[1;31mERROR[m] Caused by: Unable to load cache item
+[[1;31mERROR[m] Caused by: Could not initialize class com.google.inject.internal.cglib.core.$MethodWrapper
+[[1;31mERROR[m] Caused by: Exception com.google.inject.internal.cglib.core.$CodeGenerationException: java.lang.reflect.InaccessibleObjectException-->Unable to make protected final java.lang.Class java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain) throws java.lang.ClassFormatError accessible: module java.base does not "opens java.lang" to unnamed module @33cb5951 [in thread "main"]

@@ -11,19 +11,19 @@ import java.util.UUID;
 
 @Component
 public class UserDataLoader implements ApplicationRunner {
-    private final UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    @Autowired
-    public UserDataLoader(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	@Autowired
+	public UserDataLoader(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
-    public void run(ApplicationArguments args) {
-        User user = User.builder()
-            .id(UUID.randomUUID().toString())
-            .username("admin")
-            .password("password")
-            .build();
-        userRepository.save(user);
-    }
+	public void run(ApplicationArguments args) {
+		User existingUser = userRepository.findFirstByUsername("admin");
+		if (existingUser == null) {
+			User user = User.builder().id(UUID.randomUUID().toString()).username("admin").password("password").build();
+			userRepository.save(user);
+		}
+
+	}
 }

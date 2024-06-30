@@ -26,6 +26,7 @@ public class SpyStore {
 
 	private String name;
 	private String url;
+	private String seller;
 	private int currentPage;
 	private int maxPage;
 	
